@@ -44,7 +44,9 @@ const getHornoId = async(req, res = response) => {
     try {
         const id = req.params.id;
 
-        const hornoDB = await Horno.findById(id);
+        const hornoDB = await Horno.findById(id)
+            .populate('alta')
+            .populate('baja');
         if (!hornoDB) {
             return res.status(400).json({
                 ok: false,

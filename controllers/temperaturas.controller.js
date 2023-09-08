@@ -16,7 +16,8 @@ const getTemperatura = async(req, res) => {
             Temperatura.find(query)
             .populate('termometro')
             .limit(hasta)
-            .skip(desde),
+            .skip(desde)
+            .sort({ fecha: -1 }),
             Temperatura.countDocuments(query)
         ]);
 
