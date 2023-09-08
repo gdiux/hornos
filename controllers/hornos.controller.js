@@ -1,6 +1,7 @@
 const { response } = require('express');
 
 const Horno = require('../models/hornos.model');
+const Temperatura = require('../models/temperaturas.model');
 
 /** =====================================================================
  *  GET HORNOS
@@ -17,6 +18,53 @@ const getHornos = async(req, res) => {
             .skip(desde),
             Horno.countDocuments()
         ]);
+
+        res.json({
+            ok: true,
+            hornos,
+            total
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, porfavor intente nuevamente'
+        });
+
+    }
+
+
+};
+
+/** =====================================================================
+ *  GET HORNOS
+=========================================================================*/
+const getHornosDashboard = async(req, res) => {
+
+    try {
+        
+        const [hornos, total] = await Promise.all([
+            Horno.find({status: true}),
+            Horno.countDocuments()
+        ]);
+
+        for (let i = 0; i < hornos.length; i++) {
+            const horno = hornos[i];
+
+            
+            let tempB = await Temperatura.findOne({termometro: horno.baja})
+            .populate('termometro')
+            .sort({ fecha: -1 });
+            let tempA = await Temperatura.findOne({termometro: horno.alta})    
+            .populate('termometro')
+            .sort({ fecha: -1 });
+            
+            hornos[i].tempB = tempB;
+            hornos[i].tempA = tempA;
+
+        }
+
 
         res.json({
             ok: true,
@@ -207,5 +255,6 @@ module.exports = {
     createHorno,
     updateHorno,
     deleteHorno,
-    getHornoId
+    getHornoId,
+    getHornosDashboard
 };

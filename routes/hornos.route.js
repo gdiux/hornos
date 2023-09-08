@@ -9,7 +9,7 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { getHornos, getHornoId, createHorno, updateHorno, deleteHorno } = require('../controllers/hornos.controller');
+const { getHornos, getHornoId, createHorno, updateHorno, deleteHorno, getHornosDashboard } = require('../controllers/hornos.controller');
 
 const router = Router();
 
@@ -22,6 +22,11 @@ router.post('/query', validarJWT, getHornos);
  *  GET HORNO ID
 =========================================================================*/
 router.get('/:id', validarJWT, getHornoId);
+
+/** =====================================================================
+ *  GET HORNO ID
+=========================================================================*/
+router.get('/dashboard/temp', validarJWT, getHornosDashboard);
 
 /** =====================================================================
  *  POST HORNO

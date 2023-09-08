@@ -17,6 +17,16 @@ const HornosSchema = Schema({
         ref: 'Termometros'
     },
 
+    tempA: {
+        type: Schema.Types.ObjectId,
+        ref: 'Temperaturas'
+    },
+
+    tempB: {
+        type: Schema.Types.ObjectId,
+        ref: 'Temperaturas'
+    },
+
     status: {
         type: Boolean,
         default: true
