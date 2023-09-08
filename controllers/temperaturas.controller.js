@@ -47,7 +47,7 @@ const createTemperatura = async(req, res = response) => {
         // SAVE TEMPERATURA
         const temperatura = new Temperatura(req.body);
 
-        const termometro = await Termometro.findOne({code: temperatura.code});
+        const termometro = await Termometro.findOne({code: req.body.code});
         if (!termometro) {
             return res.status(404).json({
                 ok: false,
