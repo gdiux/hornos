@@ -16,7 +16,7 @@ const router = Router();
 /** =====================================================================
  *  POST USERS
 =========================================================================*/
-router.post('/', validarJWT, getTemperatura);
+router.post('/query', validarJWT, getTemperatura);
 
 /** =====================================================================
  *  POST CREATE LOG TEMPERATURA
