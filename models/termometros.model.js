@@ -13,6 +13,10 @@ const TermometrosSchema = Schema({
         default: true
     },
 
+    temperatura: {
+        type: string
+    },
+
     fecha: {
         type: Date,
         default: Date.now

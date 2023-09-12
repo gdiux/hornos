@@ -45,7 +45,8 @@ const getHornosDashboard = async(req, res) => {
     try {
         
         const [hornos, total] = await Promise.all([
-            Horno.find({status: true}),
+            Horno.find({status: true})
+            .sort({'name': 0}),
             Horno.countDocuments()
         ]);
 
@@ -56,6 +57,7 @@ const getHornosDashboard = async(req, res) => {
             let tempB = await Temperatura.findOne({termometro: horno.baja})
             .populate('termometro')
             .sort({ fecha: -1 });
+            
             let tempA = await Temperatura.findOne({termometro: horno.alta})    
             .populate('termometro')
             .sort({ fecha: -1 });
@@ -64,7 +66,6 @@ const getHornosDashboard = async(req, res) => {
             hornos[i].tempA = tempA;
 
         }
-
 
         res.json({
             ok: true,
