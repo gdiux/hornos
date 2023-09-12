@@ -14,7 +14,7 @@ const TermometrosSchema = Schema({
     },
 
     temperatura: {
-        type: string
+        type: String
     },
 
     fecha: {
