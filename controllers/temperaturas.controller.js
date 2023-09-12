@@ -62,7 +62,7 @@ const createTemperatura = async(req, res = response) => {
 
         let campos = {
             temperatura: temperatura.temperatura,
-            fecha: new Date()
+            fecha: temperatura.fecha
         }
 
         await Termometro.findByIdAndUpdate(termometro._id, campos, { new: true, useFindAndModify: false });
