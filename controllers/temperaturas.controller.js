@@ -11,7 +11,6 @@ const getTemperatura = async(req, res) => {
     try {
 
         const { desde, hasta, ...query } = req.body;
-
         const [temperaturas, total] = await Promise.all([
             Temperatura.find(query)
             .populate('termometro')
