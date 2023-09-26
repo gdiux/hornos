@@ -47,27 +47,9 @@ const getHornosDashboard = async(req, res) => {
         const [hornos, total] = await Promise.all([
             Horno.find({status: true})
             .populate('alta')
-            .populate('baja')
-            .sort({'name': 0}),
+            .populate('baja'),
             Horno.countDocuments()
         ]);
-
-        // for (let i = 0; i < hornos.length; i++) {
-        //     const horno = hornos[i];
-
-            
-        //     let tempB = await Temperatura.findOne({termometro: horno.baja})
-        //     .populate('termometro')
-        //     .sort({ fecha: -1 });
-            
-        //     let tempA = await Temperatura.findOne({termometro: horno.alta})    
-        //     .populate('termometro')
-        //     .sort({ fecha: -1 });
-            
-        //     hornos[i].tempB = tempB;
-        //     hornos[i].tempA = tempA;
-
-        // }
 
         res.json({
             ok: true,
