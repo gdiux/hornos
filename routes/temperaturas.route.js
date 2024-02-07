@@ -9,14 +9,19 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { getTemperatura, createTemperatura, updateTemperatura, deleteTemperatura } = require('../controllers/temperaturas.controller');
+const { getTemperatura, createTemperatura, updateTemperatura, deleteTemperatura, getTemperaturasInterval } = require('../controllers/temperaturas.controller');
 
 const router = Router();
 
 /** =====================================================================
- *  POST USERS
+ *  GET QUERY
 =========================================================================*/
 router.post('/query', validarJWT, getTemperatura);
+
+/** =====================================================================
+ *  GET QUERY INTERVAL
+=========================================================================*/
+router.post('/intervalo', validarJWT, getTemperaturasInterval);
 
 /** =====================================================================
  *  POST CREATE LOG TEMPERATURA

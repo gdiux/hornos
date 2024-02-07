@@ -1,5 +1,7 @@
 const { response } = require('express');
 
+const moment = require('moment');
+
 const Temperatura = require('../models/temperaturas.model');
 const Termometro = require('../models/termometros.model');
 
@@ -37,6 +39,66 @@ const getTemperatura = async(req, res) => {
 
 
 };
+
+/** ======================================================================
+ *  GET TEMPERATURA INTERVAL
+=========================================================================*/
+const getTemperaturasInterval = async(req, res = response) => {
+
+    try {
+
+        let { intervalo, termometro, fechaInicio, fechaFin } = req.body;
+
+        fechaInicio = moment(fechaInicio);
+        fechaFin = moment(fechaFin);
+
+        const datas = [];
+        const temperaturas = [];
+
+        let fechaActual = moment(fechaInicio);
+
+        while (fechaActual.isBefore(fechaFin)) {
+            const fechaLapsoFin = fechaActual.clone().add(intervalo, 'minutes');
+
+            const registrosEnLapso = await Temperatura.find({
+                termometro,
+                fecha: {
+                    $gte: fechaActual.toDate(),
+                    $lt: fechaLapsoFin.toDate(),
+                },
+            });
+
+            datas.push(registrosEnLapso);
+
+            fechaActual = fechaLapsoFin;
+        }
+
+        for (let i = 0; i < datas.length; i++) {
+            const data = datas[i];
+
+            if (data[data.length - 1] !== undefined) {
+                temperaturas.push(data[data.length - 1]);
+            }
+
+        }
+
+        res.json({
+            ok: true,
+            temperaturas,
+            total: temperaturas.length
+        });
+
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, porfavor intente nuevamente'
+        });
+    }
+
+};
+
 /** =====================================================================
  *  CREATE TEMPERATURA
 =========================================================================*/
@@ -47,7 +109,7 @@ const createTemperatura = async(req, res = response) => {
         // SAVE TEMPERATURA
         const temperatura = new Temperatura(req.body);
 
-        const termometro = await Termometro.findOne({code: req.body.code});
+        const termometro = await Termometro.findOne({ code: req.body.code });
         if (!termometro) {
             return res.status(404).json({
                 ok: false,
@@ -168,4 +230,5 @@ module.exports = {
     createTemperatura,
     updateTemperatura,
     deleteTemperatura,
+    getTemperaturasInterval
 };
