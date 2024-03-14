@@ -1,5 +1,7 @@
 const { response } = require('express');
 
+const ObjectId = require('mongoose').Types.ObjectId;
+
 const moment = require('moment');
 
 const Temperatura = require('../models/temperaturas.model');
@@ -13,6 +15,16 @@ const getTemperatura = async(req, res) => {
     try {
 
         const { desde, hasta, ...query } = req.body;
+
+        if (query.termometro) {
+            if (!ObjectId.isValid(query.termometro)) {
+                return res.status(404).json({
+                    ok: false,
+                    msg: 'Error en el ID de la termocupla'
+                });
+            }
+        }
+
         const [temperaturas, total] = await Promise.all([
             Temperatura.find(query)
             .populate('termometro')

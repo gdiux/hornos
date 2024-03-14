@@ -9,7 +9,7 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { getTermometros, getTermometroId, createTermometro, updateTermometro, deleteTermometro } = require('../controllers/termometros.controller');
+const { getTermometros, getTermometroId, createTermometro, updateTermometro, deleteTermometro, getTermometroCode } = require('../controllers/termometros.controller');
 
 
 const router = Router();
@@ -23,6 +23,11 @@ router.post('/query', validarJWT, getTermometros);
  *  GET TERMOMETRO ID
 =========================================================================*/
 router.get('/:id', validarJWT, getTermometroId);
+
+/** =====================================================================
+ *  GET TERMOMETRO ID
+=========================================================================*/
+router.get('/codigo/:code', getTermometroCode);
 
 /** =====================================================================
  *  POST TERMOMETRO

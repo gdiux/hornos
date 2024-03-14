@@ -12,6 +12,11 @@ const temperaturaSchema = Schema({
         ref: 'Termometros'
     },
 
+    estado: {
+        type: String,
+        default: 'Normal'
+    },
+
     status: {
         type: Boolean,
         default: true

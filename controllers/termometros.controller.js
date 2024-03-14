@@ -1,5 +1,7 @@
 const { response } = require('express');
 
+const ObjectId = require('mongoose').Types.ObjectId;
+
 const Termometro = require('../models/termometros.model');
 
 /** =====================================================================
@@ -22,6 +24,39 @@ const getTermometros = async(req, res) => {
             ok: true,
             termometros,
             total
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, porfavor intente nuevamente'
+        });
+
+    }
+
+};
+
+/** =====================================================================
+ *  GET TERMOMETRO
+=========================================================================*/
+const getTermometroCode = async(req, res) => {
+
+    try {
+
+        const code = req.params.code;
+
+        const termometro = await Termometro.findOne({ code: code });
+        if (!termometro) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'No existe ningun termometro con este codigo'
+            });
+        }
+
+        res.json({
+            ok: true,
+            termometro
         });
 
     } catch (error) {
@@ -73,9 +108,9 @@ const getTermometroId = async(req, res = response) => {
 =========================================================================*/
 const createTermometro = async(req, res = response) => {
 
-    
+
     try {
-        
+
         const termometro = new Termometro(req.body);
 
         termometro.code = termometro.code.trim();
@@ -86,7 +121,7 @@ const createTermometro = async(req, res = response) => {
                 ok: false,
                 msg: 'Ya existe un termometro con este codigo'
             });
-        }        
+        }
 
         // SAVE CANDIDATE
         await termometro.save();
@@ -110,7 +145,7 @@ const createTermometro = async(req, res = response) => {
  *  UPDATE TERMOMETRO
 =========================================================================*/
 const updateTermometro = async(req, res = response) => {
-    
+
     try {
 
         const tid = req.params.id;
@@ -126,7 +161,7 @@ const updateTermometro = async(req, res = response) => {
         // SEARCH TERMOMETRO
 
         // VALIDATE TERMOMETRO
-        const { ...campos } = req.body;
+        const {...campos } = req.body;
         campos.code = campos.code.trim();
 
         if (termometroDB.code !== campos.code) {
@@ -161,7 +196,7 @@ const updateTermometro = async(req, res = response) => {
  *  DELETE TERMOMETRO
 =========================================================================*/
 const deleteTermometro = async(req, res = response) => {
-    
+
     try {
         const tid = req.params.id;
         const uid = req.uid;
@@ -173,7 +208,7 @@ const deleteTermometro = async(req, res = response) => {
                 ok: false,
                 msg: 'No existe ningun usuario con este ID'
             });
-        }else{
+        } else {
             if (userDB.role !== 'ADMIN') {
                 return res.status(400).json({
                     ok: false,
@@ -182,7 +217,7 @@ const deleteTermometro = async(req, res = response) => {
             }
         }
         // SEARCH USER
-        
+
         // SEARCH CANDIDATE
         const termometroDB = await Termometro.findById({ _id: tid });
         if (!termometroDB) {
@@ -225,5 +260,6 @@ module.exports = {
     createTermometro,
     updateTermometro,
     deleteTermometro,
-    getTermometroId
+    getTermometroId,
+    getTermometroCode
 };
