@@ -17,7 +17,7 @@ const router = Router();
 /** =====================================================================
  *  POST TERMOMETRO
 =========================================================================*/
-router.post('/query', validarJWT, getTermometros);
+router.post('/query', getTermometros);
 
 /** =====================================================================
  *  GET TERMOMETRO ID
