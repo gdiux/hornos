@@ -25,6 +25,8 @@ const getTemperatura = async(req, res) => {
         //     }
         // }
 
+        console.log(query);
+
         const [temperaturas, total] = await Promise.all([
             Temperatura.find(query)
             .populate('termometro')
