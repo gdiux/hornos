@@ -16,16 +16,16 @@ const getTemperatura = async(req, res) => {
 
         const { desde, hasta, ...query } = req.body;
 
-        // if (query.termometro) {
-        //     if (!ObjectId.isValid(query.termometro)) {
-        //         return res.status(404).json({
-        //             ok: false,
-        //             msg: 'Error en el ID de la termocupla'
-        //         });
-        //     }
-        // }
-
         console.log(query);
+
+        if (query.termometro) {
+            if (!ObjectId.isValid(query.termometro)) {
+                return res.status(404).json({
+                    ok: false,
+                    msg: 'Error en el ID de la termocupla'
+                });
+            }
+        }
 
         const [temperaturas, total] = await Promise.all([
             Temperatura.find(query)
