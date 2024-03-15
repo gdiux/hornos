@@ -16,8 +16,6 @@ const getTemperatura = async(req, res) => {
 
         const { desde, hasta, ...query } = req.body;
 
-        console.log(query);
-
         if (query.termometro) {
             if (!ObjectId.isValid(query.termometro)) {
                 return res.status(404).json({
